@@ -29,7 +29,7 @@
 #include "wx/wx.h"
 #endif //precompiled headers
 #include <wx/textwrapper.h>
- 
+ #include "ODdc.h"
 #include "ODUtils.h"
 #include "ocpn_plugin.h"
 #include "ocpn_draw_pi.h"
@@ -351,6 +351,7 @@ int ArcSectorPoints( wxPoint *&points, wxCoord xc, wxCoord yc, wxCoord x1, wxCoo
     x1xc = x1-xc;
     y4yc = y4-yc;
     x4xc = x4-xc;
+    ODDC dc;
     wxDouble  l_dFirstAngle;
     l_dFirstAngle = atan2(y1yc, x1xc);
     
@@ -401,7 +402,15 @@ int ArcSectorPoints( wxPoint *&points, wxCoord xc, wxCoord yc, wxCoord x1, wxCoo
     npoints[0] = numpoints_inner + numpoints_outer + 4;
     points[ npoints[0] -1 ].x = x1;
     points[ npoints[0] -1 ].y = y1;
-    return npoints[0];
+    points[1].x=x3;  // new code
+    points[1].y=y3;
+    points[2].x=xc;  // new code
+    points[2].y=yc;  //new code
+    points[3].x=x1;  // new code
+    points[3].y=y1; 
+   dc.DrawPolygonTessellated( 4, points, 0, 0);
+    return 4;   //
+    //return npoints[0];
 }
 
 wxString WrapText(wxWindow *win, const wxString& text, int widthMax)
